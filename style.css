@@ -1,0 +1,736 @@
+/* ==========================================================================
+   生理學期中考 測驗系統 樣式表
+   風格：純白簡約醫學排版、無過度 Emoji、直接顯示適當圖表、鎖定作答、錯題循環
+   ========================================================================== */
+
+:root {
+  --bg-page: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --bg-hover: #f8fafc;
+
+  --border-light: #e2e8f0;
+  --border-medium: #cbd5e1;
+  --border-focus: #2563eb;
+
+  --text-main: #0f172a;
+  --text-body: #334155;
+  --text-muted: #64748b;
+  --text-dim: #94a3b8;
+
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-bg: #eff6ff;
+  --primary-border: #bfdbfe;
+
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+  --success-border: #86efac;
+
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --danger-border: #fca5a5;
+
+  --warning: #d97706;
+  --warning-bg: #fffbeb;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+
+  --font-sans: 'Inter', 'Noto Sans TC', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, monospace;
+}
+
+/* -------------------- 基礎重設 -------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.6;
+  font-size: 15px;
+  background-color: var(--bg-page);
+  display: flex;
+  flex-direction: column;
+}
+
+/* -------------------- 1. 頂部導航列 (Header) -------------------- */
+.app-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-light);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+}
+
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+.brand-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quiz-status-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.round-badge {
+  font-size: 0.75rem;
+  background-color: #fef3c7;
+  color: #92400e;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.progress-indicator {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-body);
+  font-family: var(--font-mono);
+}
+
+/* -------------------- 2. 主版面容器 -------------------- */
+.main-content {
+  flex: 1;
+  padding: 32px 20px 60px 20px;
+}
+
+.container {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-card);
+}
+
+/* -------------------- 3. 前置首頁設定畫面 (Home Setup) -------------------- */
+.setup-header {
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 16px;
+}
+
+.setup-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+.setup-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.setup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-body);
+}
+
+.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 10px 32px 10px 12px;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+  width: 100%;
+}
+
+.form-select:hover {
+  border-color: var(--border-medium);
+}
+
+.form-select:focus {
+  border-color: var(--border-focus);
+}
+
+.setup-available-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  color: var(--text-body);
+}
+
+.setup-available-info strong {
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.setup-actions {
+  margin-top: 10px;
+}
+
+/* -------------------- 4. 單題作答卡片 (Question Card) -------------------- */
+.q-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.meta-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.badge-year {
+  background-color: var(--primary-bg);
+  color: var(--primary);
+  border-color: var(--primary-border);
+  font-weight: 600;
+}
+
+.badge-teacher {
+  background-color: #faf5ff;
+  color: #7e22ce;
+  border-color: #e9d5ff;
+}
+
+.badge-type {
+  background-color: var(--bg-subtle);
+  color: var(--text-muted);
+  border-color: var(--border-light);
+}
+
+.badge-vol {
+  background-color: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+  font-family: var(--font-mono);
+}
+
+.q-counter-badge {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.q-topic {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.q-stem {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  white-space: pre-line;
+  word-break: break-word;
+}
+
+/* -------------------- 5. 附屬生理圖譜 (直接完整大小呈現) -------------------- */
+.q-diagram-box {
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.q-diagram-box img {
+  max-width: 100%;
+  max-height: 380px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  display: block;
+  margin: 0 auto 10px auto;
+  background-color: #ffffff;
+}
+
+.diagram-caption {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* -------------------- 6. 選項按鈕 (作答後鎖定不可更改) -------------------- */
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.option-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  color: var(--text-body);
+  font-size: 0.95rem;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  word-break: break-word;
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  background-color: var(--bg-hover);
+}
+
+.option-btn:disabled {
+  cursor: default;
+}
+
+.opt-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--border-medium);
+  background-color: var(--bg-subtle);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+}
+
+.opt-content {
+  flex: 1;
+  padding-top: 1px;
+}
+
+/* 點選正確狀態 */
+.option-btn.selected-correct {
+  background-color: var(--success-bg) !important;
+  border-color: var(--success) !important;
+  color: #14532d !important;
+}
+
+.option-btn.selected-correct .opt-pill {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: #ffffff;
+}
+
+/* 點選錯誤狀態 */
+.option-btn.selected-wrong {
+  background-color: var(--danger-bg) !important;
+  border-color: var(--danger) !important;
+  color: #7f1d1d !important;
+}
+
+.option-btn.selected-wrong .opt-pill {
+  background-color: var(--danger);
+  border-color: var(--danger);
+  color: #ffffff;
+}
+
+/* 標註標準正確答案 */
+.option-btn.is-answer-hint {
+  border-color: var(--success) !important;
+  box-shadow: 0 0 0 1px var(--success);
+}
+
+.option-btn.is-answer-hint .opt-pill {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+/* 簡答題輸入卡 */
+.short-answer-box {
+  margin-bottom: 24px;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 90px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--text-main);
+  outline: none;
+  resize: vertical;
+  margin-bottom: 10px;
+}
+
+.form-textarea:focus {
+  border-color: var(--border-focus);
+}
+
+/* -------------------- 7. 詳解與官方共筆出處面板 -------------------- */
+.explanation-box {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background-color: #ffffff;
+  padding: 20px;
+  margin-bottom: 24px;
+  animation: fadeIn 0.2s ease;
+}
+
+.ref-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.ref-title {
+  color: #166534;
+  font-weight: 600;
+}
+
+.ref-file {
+  font-weight: 700;
+  color: #14532d;
+  font-family: var(--font-mono);
+}
+
+.ref-page {
+  color: #15803d;
+  font-size: 0.82rem;
+}
+
+.ans-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.ans-badge {
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.ans-badge strong {
+  font-size: 1rem;
+  color: var(--success);
+  font-family: var(--font-mono);
+}
+
+.concept-badge {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  background-color: var(--bg-subtle);
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.expl-content {
+  border-top: 1px solid var(--border-light);
+  padding-top: 14px;
+}
+
+.expl-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.expl-text {
+  font-size: 0.95rem;
+  color: var(--text-body);
+  line-height: 1.7;
+  white-space: pre-line;
+  word-break: break-word;
+}
+
+/* -------------------- 8. 單題卡片底部操作 -------------------- */
+.q-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-light);
+  gap: 16px;
+}
+
+.footer-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* -------------------- 9. 結算畫面與錯題重做 (Summary Screen) -------------------- */
+.summary-header {
+  text-align: center;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 18px;
+}
+
+.summary-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+.summary-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.stats-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-box {
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sb-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.sb-val {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-main);
+}
+
+.text-success { color: var(--success); }
+.text-danger { color: var(--danger); }
+.text-accent { color: var(--primary); }
+
+.review-prompt-box {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin-bottom: 28px;
+}
+
+.review-prompt-box.all-clear {
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.rp-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+.rp-desc {
+  font-size: 0.88rem;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+
+.summary-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* -------------------- 10. 通用按鈕 -------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--font-sans);
+  border: 1px solid transparent;
+  line-height: 1.2;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+}
+
+.btn-outline {
+  background-color: #ffffff;
+  border-color: var(--border-light);
+  color: var(--text-body);
+}
+
+.btn-outline:hover:not(:disabled) {
+  border-color: var(--border-medium);
+  background-color: var(--bg-hover);
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 1rem;
+}
+
+.btn-sm {
+  padding: 5px 12px;
+  font-size: 0.8rem;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* -------------------- 11. 響應式佈局 -------------------- */
+@media (max-width: 640px) {
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .card {
+    padding: 20px 16px;
+  }
+  .stats-overview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .summary-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .summary-actions .btn {
+    width: 100%;
+  }
+}

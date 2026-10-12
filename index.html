@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生理學期中考 測驗系統</title>
+  <meta name="description" content="國防醫學院生理學期中考歷屆試題測驗系統。提供前置自訂篩選、錯題循環重做、單題專注作答與官方共筆出處精確對照。">
+  <!-- Google Fonts: Inter & Noto Sans TC for clean, quiet typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <h1 class="brand-title">生理學期中考 測驗系統</h1>
+        <span class="brand-sub">B12・B11・B10 題庫與共筆對照</span>
+      </div>
+
+      <div class="header-right">
+        <!-- 答題時顯示的統計與回到首頁按鈕 -->
+        <div class="quiz-status-group hidden" id="header-quiz-status">
+          <span class="round-badge hidden" id="header-review-badge">錯題重做輪迴</span>
+          <span class="progress-indicator" id="header-progress-text">第 1 / 20 題</span>
+          <button type="button" class="btn btn-outline btn-sm" id="btn-nav-home">回到首頁</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主內容容器 -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- ==================== 1. 前置首頁（測驗參數設定畫面） ==================== -->
+      <section class="screen-view" id="screen-home">
+        <div class="card setup-card">
+          <div class="setup-header">
+            <h2 class="setup-title">測驗自訂設定</h2>
+            <p class="setup-desc">請選擇您欲測驗的考卷年份、命題教師、共筆冊數範圍與題數，確認後點擊開始測驗。</p>
+          </div>
+
+          <form id="form-setup" class="setup-form" onsubmit="return false;">
+            <!-- 考卷年份 -->
+            <div class="form-group">
+              <label for="setup-year" class="form-label">考卷年份</label>
+              <select id="setup-year" class="form-select">
+                <option value="all">全部年份考卷（B12、B11、B10）</option>
+                <option value="B12">B12 最新試題（53 題完整題目）</option>
+                <option value="B11">B11 歷屆試題</option>
+                <option value="B10">B10 經典高頻試題</option>
+              </select>
+            </div>
+
+            <!-- 命題教師範圍 -->
+            <div class="form-group">
+              <label for="setup-teacher" class="form-label">命題教師範圍</label>
+              <select id="setup-teacher" class="form-select">
+                <option value="all">全部教師範圍</option>
+                <option value="郭鐘金老師">郭鐘金老師（細胞電位、通道、肌肉生理）</option>
+                <option value="李宗玄老師">李宗玄老師（心臟電生理、心律、心臟代謝）</option>
+                <option value="張哲逢老師">張哲逢老師（循環生理、柏肅葉定律、血流動力）</option>
+                <option value="余佳慧老師">余佳慧老師（血液生理學、Hb-O2、凝血）</option>
+                <option value="蔡佳醍老師">蔡佳醍老師（臨床心律不整、心電圖判讀）</option>
+              </select>
+            </div>
+
+            <!-- 對應共筆冊數範圍 -->
+            <div class="form-group">
+              <label for="setup-volume" class="form-label">對應官方共筆範圍</label>
+              <select id="setup-volume" class="form-select">
+                <option value="all">全部共筆範圍（Vol. 1 ～ Vol. 8）</option>
+                <option value="B12 生理 vol.1.pdf">B12 生理 vol.1.pdf（細胞膜電位、Ion channels、NMJ）</option>
+                <option value="B12 生理 vol.2.pdf">B12 生理 vol.2.pdf（動作電位傳導、骨骼肌、平滑肌）</option>
+                <option value="B12 生理 vol.3.pdf">B12 生理 vol.3.pdf（心肌收縮力、心電生理、自律神經）</option>
+                <option value="B12 生理 vol.4.pdf">B12 生理 vol.4.pdf（心輸出量、心衰竭肥厚、冠脈腺苷）</option>
+                <option value="B12 生理 vol.5.pdf">B12 生理 vol.5.pdf（臨床 EKG、心律不整 AF/AFL/STEMI）</option>
+                <option value="B12 生理 vol.6.pdf">B12 生理 vol.6.pdf（循環總論、Poiseuille、雷諾數、動脈脈壓）</option>
+                <option value="B12 生理 vol.7.pdf">B12 生理 vol.7.pdf（血液生理、Hb-O2 解離、Rh 溶血、凝血）</option>
+                <option value="B12 生理 vol.8.pdf">B12 生理 vol.8.pdf（微循環 Starling 水腫、臥立姿、運動調控）</option>
+              </select>
+            </div>
+
+            <!-- 測驗題數 -->
+            <div class="form-group">
+              <label for="setup-count" class="form-label">測驗題數</label>
+              <select id="setup-count" class="form-select">
+                <option value="10">10 題</option>
+                <option value="15">15 題</option>
+                <option value="20" selected>20 題</option>
+                <option value="25">25 題</option>
+                <option value="30">30 題</option>
+                <option value="all">全部符合之題目</option>
+              </select>
+            </div>
+
+            <!-- 出題模式 -->
+            <div class="form-group">
+              <label for="setup-order" class="form-label">出題順序</label>
+              <select id="setup-order" class="form-select">
+                <option value="random">隨機打亂抽題（模擬真實考試）</option>
+                <option value="sequential">依試卷題號依序出題</option>
+              </select>
+            </div>
+
+            <!-- 總可用題數即時提示 -->
+            <div class="setup-available-info">
+              <span>符合目前條件之題庫庫存：</span>
+              <strong id="setup-pool-count">61 題</strong>
+            </div>
+
+            <!-- 開始按鈕 -->
+            <div class="setup-actions">
+              <button type="button" class="btn btn-primary btn-lg btn-full" id="btn-start-quiz">開始測驗</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ==================== 2. 單題作答畫面 ==================== -->
+      <section class="screen-view hidden" id="screen-quiz">
+        <div class="card question-card">
+          <!-- 題目資訊列 -->
+          <div class="q-meta-bar">
+            <div class="meta-badges">
+              <span class="badge badge-year" id="q-badge-year">B12</span>
+              <span class="badge badge-teacher" id="q-badge-teacher">郭鐘金老師</span>
+              <span class="badge badge-type" id="q-badge-type">單選題</span>
+              <span class="badge badge-vol" id="q-badge-vol">B12 生理 vol.1.pdf</span>
+            </div>
+            <div class="q-counter-badge" id="q-progress-badge">1 / 20</div>
+          </div>
+
+          <!-- 章節主題與題號 -->
+          <div class="q-topic" id="q-topic">離子通道與平衡電位</div>
+
+          <!-- 題幹文字 -->
+          <div class="q-stem" id="q-stem">題目內容載入中...</div>
+
+          <!-- 附屬生理圖譜（直接完整適度大小展示，不需二次點擊） -->
+          <div class="q-diagram-box hidden" id="q-diagram-container">
+            <img id="q-diagram-img" src="" alt="生理圖譜">
+            <div class="diagram-caption" id="q-diagram-caption">高頻核心生理圖譜</div>
+          </div>
+
+          <!-- 選項容器（作答後不可更改答案，按鈕自動鎖定） -->
+          <div class="options-container" id="options-container">
+            <!-- 由 JS 動態產生選項按鈕 -->
+          </div>
+
+          <!-- 簡答題輸入容器（非選題時） -->
+          <div class="short-answer-box hidden" id="short-answer-container">
+            <textarea id="short-answer-input" class="form-textarea" placeholder="可在這裡嘗試寫下您的核心解答或推導觀念..."></textarea>
+            <button type="button" class="btn btn-outline btn-sm" id="btn-submit-short">提交並查看官方參考解答</button>
+          </div>
+
+          <!-- 答案與詳解面板（作答後立即揭示） -->
+          <div class="explanation-box hidden" id="explanation-box">
+            <!-- 官方共筆出處橫幅 -->
+            <div class="ref-banner">
+              <span class="ref-title">官方共筆檔案出處：</span>
+              <span class="ref-file" id="expl-vol-file">B12 生理 vol.1.pdf</span>
+              <span class="ref-page" id="expl-vol-page">Vol. 1 p.20～22</span>
+            </div>
+
+            <!-- 標準答案與核心口訣 -->
+            <div class="ans-summary">
+              <div class="ans-badge">
+                <span>標準答案：</span>
+                <strong id="expl-answer">D</strong>
+              </div>
+              <div class="concept-badge" id="expl-concept-container">
+                <span>核心考點：</span>
+                <span id="expl-concept">Nernst 平衡電位</span>
+              </div>
+            </div>
+
+            <!-- 完整生理學機轉剖析 -->
+            <div class="expl-content">
+              <h4 class="expl-title">生理學完整詳解</h4>
+              <div class="expl-text" id="expl-text"></div>
+            </div>
+          </div>
+
+          <!-- 底部切換「下一題」操作列 -->
+          <div class="q-footer">
+            <div class="footer-hint" id="footer-hint">請點選上方任一選項作答（作答後無法更改）</div>
+            <button type="button" class="btn btn-primary" id="btn-next-question" disabled>下一題 →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 3. 測驗完成與錯題重做結算畫面 ==================== -->
+      <section class="screen-view hidden" id="screen-summary">
+        <div class="card summary-card">
+          <div class="summary-header">
+            <h2 class="summary-title" id="summary-title">測驗完成結算</h2>
+            <p class="summary-desc" id="summary-desc">本輪題目已全數作答完畢，以下為您的作答成效：</p>
+          </div>
+
+          <!-- 成績統計方塊 -->
+          <div class="stats-overview-grid">
+            <div class="stat-box">
+              <span class="sb-label">總作答題數</span>
+              <span class="sb-val" id="sum-total-count">20 題</span>
+            </div>
+            <div class="stat-box">
+              <span class="sb-label">答對題數</span>
+              <span class="sb-val text-success" id="sum-correct-count">16 題</span>
+            </div>
+            <div class="stat-box">
+              <span class="sb-label">答錯題數</span>
+              <span class="sb-val text-danger" id="sum-wrong-count">4 題</span>
+            </div>
+            <div class="stat-box">
+              <span class="sb-label">正確率</span>
+              <span class="sb-val text-accent" id="sum-accuracy">80%</span>
+            </div>
+          </div>
+
+          <!-- 錯題清單導覽提示 -->
+          <div class="review-prompt-box" id="review-prompt-box">
+            <h3 class="rp-title" id="rp-title">🔁 錯題重做系統</h3>
+            <p class="rp-desc" id="rp-desc">
+              系統將重複餵給您剛剛答錯的題目。若在後續輪迴中答對，該題將立刻從錯題庫中移除，直到您完全解決所有錯題為止！
+            </p>
+          </div>
+
+          <!-- 結算操作按鈕 -->
+          <div class="summary-actions">
+            <button type="button" class="btn btn-primary btn-lg" id="btn-start-review">開始錯題重做（剩餘 4 題）</button>
+            <button type="button" class="btn btn-outline btn-lg" id="btn-summary-home">回到首頁重新設定</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- 題庫資料與核心邏輯 -->
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
